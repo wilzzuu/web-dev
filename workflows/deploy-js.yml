@@ -23,7 +23,7 @@ jobs:
         run: |
           lftp -d -c "
           set ssl:verify-certificate no;
-          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ftp://${{ secrets.FTP_HOST }};
-          mirror -R --verbose --only-newer --parallel=10 ./dist /js-dev;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }};
+          mirror -R --verbose --only-newer --parallel=10 ./ /js-dev;
           bye;
           "
