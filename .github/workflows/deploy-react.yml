@@ -15,10 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Dependencies and Build
-        run: |
-          npm install
-          npm run build
-
+        run: sudo apt-get install -y lftp
       - name: Deploy to cPanel React Subdomain
         run: |
           lftp -d -c "
