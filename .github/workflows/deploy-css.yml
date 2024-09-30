@@ -1,0 +1,29 @@
+name: Deploy CSS Website
+
+on:
+  push:
+    branches:
+      - css-flexbox
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies and Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to cPanel CSS Subdomain
+        run: |
+          lftp -d -c "
+          set ssl:verify-certificate no;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }};
+          mirror -R --verbose --only-newer --parallel=10 ./ /css-dev;
+          bye;
+          "
